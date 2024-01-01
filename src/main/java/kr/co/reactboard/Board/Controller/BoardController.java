@@ -26,6 +26,7 @@ public class BoardController {
 
     @Autowired
     public BoardController( BoardService boardService ){
+        System.out.println("커밋테스트");
         this.boardService = boardService;
     }
 
