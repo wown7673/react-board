@@ -1,5 +1,10 @@
 # 리액트 + 스프링부트 게시판 
 
+### 사용 tool
+Intellij</br>
+DBeaver</br>
+Talend API(크롬브라우저)</br>
+
 ### 사용기술
 리액트</br>
 스프링부트</br>
