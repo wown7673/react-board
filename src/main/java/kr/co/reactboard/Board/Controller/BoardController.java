@@ -7,6 +7,8 @@ import kr.co.reactboard.Board.Service.BoardService;
 import kr.co.reactboard.Board.dto.Board;
 import kr.co.reactboard.common.CustomException;
 import kr.co.reactboard.common.ErrorCode;
+import kr.co.reactboard.common.Pagination;
+import kr.co.reactboard.common.Search;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,23 +19,29 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 import java.security.InvalidParameterException;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
 @RequestMapping("/board")
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.PUT, RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.OPTIONS, RequestMethod.HEAD})
 public class BoardController {
     private final BoardService boardService;
 
     @Autowired
     public BoardController( BoardService boardService ){
-        System.out.println("커밋테스트");
         this.boardService = boardService;
     }
 
     @GetMapping("/boards")
-    public ResponseEntity<List<Board>> getBoardList(){
-        List<Board> boardList = boardService.getBoardList();
-
+    public ResponseEntity<Pagination<Board>> getBoardList(
+            @RequestParam(required=false, defaultValue = "1") int page ,
+            @RequestParam(value = "rowSize",required=false,defaultValue = "10") int rowSize,
+            @RequestParam( required=false,defaultValue = "10") int pageSize,
+            Search search
+    ){
+        Pagination<Board> boardList = boardService.getBoardList(page, rowSize, pageSize , search);
         return ResponseEntity.ok(boardList);
     }
 
@@ -46,9 +54,32 @@ public class BoardController {
         return ResponseEntity.ok(board);
     }
 
-    @PostMapping("/board")
-    public ResponseEntity<String> addBoard(@Validated Board board){
+
+    @PutMapping("/board/{id}")
+    public ResponseEntity<Void> updateBoard(@RequestBody @Validated Board board, @PathVariable int id){
+        System.out.println(board);
+        System.out.println(id);
+        System.out.println(LocalDateTime.now());
+        board.setModeDate(LocalDateTime.now());
+        boardService.updateBoard(board);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/board")
+    public ResponseEntity<String> addBoard(@RequestBody @Validated Board board){
+        System.out.println(LocalDateTime.now());
+        board.setCreaDate(LocalDateTime.now());
+        boardService.addBoard(board);
+
+        return ResponseEntity.ok().build();
+
+    }
+
+    @DeleteMapping("/board/{idx}")
+    public ResponseEntity<Void> deleteBoard(@PathVariable int idx){
+        boardService.deleteBoard(idx);
+        return ResponseEntity.ok().build();
+    }
+
 }
 

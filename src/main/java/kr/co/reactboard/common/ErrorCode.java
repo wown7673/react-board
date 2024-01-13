@@ -13,6 +13,8 @@ public enum ErrorCode {
     // 400
     INVALID_REQUEST(400, HttpStatus.BAD_REQUEST, "COMMON-ERR-400","잘못된 요청입니다."),
 
+    VALID_FAIL(400, HttpStatus.BAD_REQUEST, "COMMON-VALID-400", "유효성 검사 실패"),
+
     // 404
     USER_NOT_FOUND(404, HttpStatus.NOT_FOUND,"MEMBER-ERR-404", "해당하는 정보의 사용자를 찾을 수 없습니다."),
 
