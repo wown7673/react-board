@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.reactboard.lottery.mapper.LotteryMapper">
+    <select id="getLotteryNumber" parameterType="String" resultType="kr.co.reactboard.lottery.dto.Lottery">
+        SELECT * FROM lotto_win_num
+        WHERE turn_num = #{round}
+    </select>
+
+    <select id="getRoundCount"  resultType="int">
+        SELECT turn_num  FROM lotto_win_num ORDER BY  turn_num DESC LIMIT 1;
+    </select>
+
+
+
+</mapper>
